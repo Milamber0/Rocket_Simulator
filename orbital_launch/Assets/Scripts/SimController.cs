@@ -356,8 +356,8 @@ public class SimController : MonoBehaviour
             m_SpeedGUI.text =           "Speed: " + m_Rocket.GetVelocity().ToString("F2") + "m/s";
             m_AccelerationGUI.text =    "Acceleration: " + m_Rocket.GetAcceleration().ToString("F2") + "m/s^2";
             m_FuelGUI.text =            "Fuel: " + m_Rocket.GetFuel().ToString("F2") + "kg";
-            m_ApogeeGUI.text =          "Apogee Altitude: " + m_DrawPrediction.GetApogee().ToString("F2") + "m";
-            m_PerigeeGUI.text =         "Perigee Altitude: " + m_DrawPrediction.GetPerigee().ToString("F2") + "m";
+            m_ApogeeGUI.text =          "Apogee Altitude: " + m_DrawPrediction.GetApogee().ToString("F0") + "m";
+            m_PerigeeGUI.text =         "Perigee Altitude: " + m_DrawPrediction.GetPerigee().ToString("F0") + "m";
             m_DragGUI.text =            "Drag: " + m_Rocket.GetDrag().ToString("F4") + "N";
 
             if (m_Rocket.HitGround())

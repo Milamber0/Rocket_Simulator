@@ -14,17 +14,22 @@ public class DrawPrediction : MonoBehaviour {
     Vector3 perigee = new Vector3();
     private float apogeeAltitude = 0.0f;
     private float perigeeAltitude = float.MaxValue;
-    Vector3 previousDebugVector = new Vector3(0, 0, 0);
+    //Vector3 previousDebugVector = new Vector3(0, 0, 0);
     private static float startYRocket = 9009f;
 
 
     public static double m_OrbitTargetRadius = 6356766f;
     private double m_UnityScaleFix = (m_OrbitTargetRadius / startYRocket);
 
+    //Max vertex detail of the prediction line.
+    const int MAX_PREDICTEDPOINTS_ARRAY = 500;
+
 
     void Update()
     {
         List<Vector3> predictedPoints = m_SimController.GetPredictedPoints();
+        Vector3[] predictedPointsArray = new Vector3[MAX_PREDICTEDPOINTS_ARRAY];
+        int predictedPointsIterator = 0;
 
         apogeeAltitude = 0.0f;
         perigeeAltitude = float.MaxValue;
@@ -46,18 +51,33 @@ public class DrawPrediction : MonoBehaviour {
 	                perigee = position;
 	                perigeeAltitude = position.magnitude;
 	            }
-	
-	            if (i % 50 == 0)
-	            {
-	                if (i != 0)
-	                {
-	                    Debug.DrawLine(previousDebugVector, predictedPoints[i], Color.green);
-	                }
-	                previousDebugVector = predictedPoints[i];
-	            }
-	        }
-	
-	        apogeeMarker.position = apogee;
+
+                //Debug lines gave a more desired result but doesn't show up in the compiled version.
+                //if (i % 50 == 0)
+                //{
+                //       if (i != 0)
+                //       {
+                //           Debug.DrawLine(previousDebugVector, predictedPoints[i], Color.green);
+                //    }
+                //    previousDebugVector = predictedPoints[i];
+                //}
+
+                //How low i % num is the frequency a point is sampled into the array that's drawn.
+                if (i % 250 == 0)
+                {
+                    if (predictedPointsIterator < MAX_PREDICTEDPOINTS_ARRAY)
+                    {
+                        predictedPointsArray[predictedPointsIterator++] = predictedPoints[i];
+                    }
+                }
+            }
+
+            //Draw line.
+            GetComponent<LineRenderer>().numPositions = predictedPointsIterator;
+            GetComponent<LineRenderer>().SetPositions(predictedPointsArray);
+
+
+            apogeeMarker.position = apogee;
 	        perigeeMarker.position = perigee;
         }
     }

@@ -28,3 +28,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+orbital_launch/Library/
